@@ -1,11 +1,12 @@
+#
+# Code to read and filter a csv file, write to a parquet
+# file with the resulting data frame using a pyspark job on a dataproc cluster.
+
 from pyspark.sql import SparkSession
 from pyspark.ml.feature import RegexTokenizer
 from pyspark.ml.feature import StopWordsRemover
 from pyspark.sql.functions import col, udf, when
 from pyspark.sql.types import BooleanType, IntegerType
-
-# Code to read and filter a csv file, and write to a parquet
-# file with the resulting data frame using a pyspark job on a dataproc cluster
 
 spark = SparkSession.builder.getOrCreate()
 
@@ -34,7 +35,7 @@ reviews_bool = clean_df.withColumn('positive_review_bool', findGood(col('filtere
                        .select('cid', 'positive_review_bool')
 
 # Saving data frame as parquet
-reviews_bool.write.parquet('gs://wzlnde-staging-0/reviews_bool.parquet')
+#reviews_bool.write.parquet('gs://wzlnde-staging-0/reviews_bool')
 
 # Converting "positive_review_bool" column from boolean to integer
 reviews = reviews_bool.withColumn("positive_review",\
@@ -43,4 +44,4 @@ reviews = reviews_bool.withColumn("positive_review",\
                       .select('cid','positive_review')
 
 # Saving data frame as parquet
-reviews.write.parquet('gs://wzlnde-staging-0/reviews.parquet')
+reviews.write.parquet('gs://wzlnde-staging-0/reviews')
