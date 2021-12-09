@@ -30,7 +30,8 @@ with DAG(
     ) as dag:
 
     create_dataset = BigQueryCreateEmptyDatasetOperator(
-        task_id='create_airflow_dataset', dataset_id=DATASET_NAME
+        task_id='create_airflow_dataset',
+        dataset_id=DATASET_NAME
     )
 
     load_parquet = GCSToBigQueryOperator(
