@@ -41,6 +41,14 @@ What this DAG does is, first split the string containing the review into a list 
 
 Here's a sample of the data frame:
 
+|  cid  | positive_review |
+|:-----:|:---------------:|
+| 16579 |        1        |
+| 14841 |        0        |
+| 18085 |        0        |
+| 16365 |        1        |
+| 17912 |        0        |
+
 This data frame is written in a parquet file in the staging layer.
 
 ## Step 3
@@ -58,7 +66,15 @@ It is necesary to upload the code for the job in the code bucket, this time the 
 
 Final data frame sample:
 
-Once job is finished two tasks are simultaneously run, one triggers the next DAG to upload the parquet file to BigQuery if job succeeded, the other task destroys the cluster, even if job fails.
+| customer_id | amount_spent       | review_count | review_score | insert_date              |
+|-------------|--------------------|--------------|--------------|--------------------------|
+| 12662       | 3817.080005645752  | 118          | 46           | 2021-12-08T04:55:07.365Z |
+| 12704       | 2220.839982509613  |              |              | 2021-12-08T04:55:07.365Z |
+| 12705       | 6814.2399978637695 | 115          | 38           | 2021-12-08T04:55:07.365Z |
+| 12708       | 2616.3200166225433 | 118          | 37           | 2021-12-08T04:55:07.365Z |
+| 12709       | 9294.100022554398  | 111          | 40           | 2021-12-08T04:55:07.365Z |
+
+Once job is finished, two tasks are simultaneously run, one triggers the next DAG to upload the parquet file to BigQuery if job succeeded, the other task destroys the cluster, even if job fails.
 
 ## Step 4
 
