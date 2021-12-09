@@ -15,4 +15,6 @@ The goal is to create an end-to-end solution; this problem reflects a real-world
 
 This repository contains the code of the Airflow DAGs used to build one approach to the end-to-end solution necesary to solve the problem.
 
+Source data can be found in `data/` folder, there are two compressed CSV files with all the data used in this project.
+
 Inside folder `dags/` the files are enumerated in the execution order they should be run, more details on how they work is specified in the respective README, folder `sql/` contains the code for a query executed by one of the DAGs, finally the `pyspark/` folder has the code of **pyspark** jobs to be submitted and executed in a dataproc cluster.
