@@ -1,5 +1,5 @@
 #
-# DAG to copy from a table in postgres into a csv file in a GCS bucket.
+# Airflow DAG to copy from a table in postgres into a CSV file in a GCS bucket.
 
 import psycopg2
 from datetime import datetime

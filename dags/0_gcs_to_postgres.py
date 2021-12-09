@@ -1,3 +1,6 @@
+# 
+# Airflow DAG to create a table on a Postgres database and load a CSV file from GCS.
+
 import psycopg2
 from datetime import datetime
 from airflow import DAG
@@ -33,7 +36,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id='csv_on_gcs_to_postgres',
+    dag_id='gcs_to_postgres',
     default_args=default_args,
     schedule_interval="@once",
     catchup=False,

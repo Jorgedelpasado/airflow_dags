@@ -1,21 +1,19 @@
+#
 # Airflow DAG to create a Dataproc cluster, submit a Pyspark Job from GCS and
-# if succeeded triger another DAG to upload the file just created from staging layer
-# to BigQuery, after trigger it destroys the cluster.
+# destroy the cluster.
 
 from airflow import DAG
 from datetime import datetime
-from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.providers.google.cloud.operators.dataproc import (
     DataprocCreateClusterOperator,
     DataprocSubmitJobOperator,
     DataprocDeleteClusterOperator
 )
 
-# Dataproc
 CLUSTER_NAME = 'efimeral-cluster'
 REGION='us-east1'
 PROJECT_ID='capstone-jmv'
-PYSPARK_URI='gs://testing-bucket-wzln-0/user_behavior.py'
+PYSPARK_URI='gs://wzlnde-code-0/pyspark/tokenizer.py'
 
 # Cluster definition
 CLUSTER_CONFIG = {
@@ -47,7 +45,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id='submit_user_behavior',
+    dag_id='submit_tokenizer',
     default_args=default_args,
     schedule_interval="@once",
     catchup=False,
@@ -69,16 +67,12 @@ with DAG(
         project_id=PROJECT_ID
     )
 
-    trigger = TriggerDagRunOperator(
-        task_id='trigger_upload_to_bq',
-        trigger_dag_id='staging_to_bigquery'
-    )
-
     delete_cluster = DataprocDeleteClusterOperator(
         task_id="delete_cluster",
         project_id=PROJECT_ID,
         cluster_name=CLUSTER_NAME,
-        region=REGION
+        region=REGION,
+        trigger_rule='all_done'
     )
-    
-    create_cluster >> pyspark_task >> trigger >> delete_cluster
+
+    create_cluster >> pyspark_task >> delete_cluster

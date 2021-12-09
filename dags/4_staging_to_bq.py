@@ -1,6 +1,6 @@
-# Airflow DAG to create a Dataproc cluster, submit a Pyspark Job from GCS and
-# if succeeded triger another DAG to upload the file just created from staging layer
-# to BigQuery, after trigger it destroys the cluster.
+#
+# Airflow DAG to create a dataset and a table in BigQuery and load a parquet
+# file from GCS into the newly created table.
 
 from airflow import DAG
 from datetime import datetime
